@@ -1,41 +1,37 @@
 # Prompt
 function prompt_scragz_precmd() {
-	# last command exit status smiley
-	PR_SMILEY='%(?,%F{green}😀 %F{none},%F{red}😡 %F{none})'
-	#PR_GIT=`git_prompt_info`
-	local ref=$(git symbolic-ref HEAD 2> /dev/null)
+  # last command exit status smiley, hidden if iterm2 integration present
+  PROMPT_SMILEY='%(?,%F{green}😀 %F{none},%F{red}😡 %F{none})'
 
   if (( $+functions[git-info] )); then
     git-info
   fi
 
-	# set a simple variable to show when in screen
-	if [[ -n "${WINDOW}" ]]; then
-	    SCREEN=" S:${WINDOW}"
-	else
-	    SCREEN=""
-	fi
-
-	# check if jobs are executing
-	if [[ $(jobs | wc -l) -gt 0 ]]; then
-	    JOBS=" J:%j"
-	else
-	    JOBS=""
-	fi
-
-  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    PR_HOST='%F{magenta}%m'
+  # set a simple variable to show when in screen
+  if [[ -n "${WINDOW}" ]]; then
+    SCREEN=" S:${WINDOW}"
   else
-    PR_HOST='%F{cyan}%m'
+    SCREEN=""
   fi
 
-	type iterm2_prompt_mark &>/dev/null && PR_SMILEY='' || function iterm2_prompt_mark(){}
-}
+  # check if jobs are executing
+  if [[ $(jobs | wc -l) -gt 0 ]]; then
+    JOBS=" J:%j"
+  else
+    JOBS=""
+  fi
 
-function prompt_char {
-  git branch >/dev/null 2>/dev/null && echo '±' && return
-  hg root >/dev/null 2>/dev/null && echo '☿' && return
-  echo '○'
+  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    PROMPT_HOST='%F{magenta}%m'
+  else
+    PROMPT_HOST='%F{cyan}%m'
+  fi
+
+  if typeset -f iterm2_prompt_mark > /dev/null; then
+    PROMPT_SMILEY=''
+  else
+    alias iterm2_prompt_mark=:
+  fi
 }
 
 function prompt_scragz_setup() {
@@ -65,8 +61,8 @@ function prompt_scragz_setup() {
     'rprompt' '%A%B%S%a%d%m%r%U%u'
 
   PROMPT='
-%(!.%B%F{red}%n.%f%b%n)%F{blue}@${PR_HOST}%f%b %F{yellow}${PWD/#$HOME/~} ${git_info:+${(e)git_info[prompt]}}
-%{$(iterm2_prompt_mark)%}${PR_SMILEY}%f%b '
+%(!.%B%F{red}%n.%f%b%n)%F{blue}@${PROMPT_HOST}%f%b %F{yellow}${PWD/#$HOME/~} ${git_info:+${(e)git_info[prompt]}}
+%{$(iterm2_prompt_mark)%}${PROMPT_SMILEY}%f%b '
   RPROMPT='%F{yellow}!%h${SCREEN}${JOBS}%(?.. E:%?)%f${git_rprompt_info}'
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
 }
