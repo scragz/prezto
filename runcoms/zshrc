@@ -12,7 +12,5 @@ fi
 
 # Customize to your needs...
 
-# iterm2 integration
-if [[ -s ~/.iterm2_shell_integration.zsh ]]; then
-  source ~/.iterm2_shell_integration.zsh
-fi
+# Make it possible to add per-machine customizations.
+if [[ -f ~/.zshrc.local ]] source ~/.zshrc.local

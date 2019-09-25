@@ -10,6 +10,10 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
+# Secret environment that can be .gitignore'd
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/secret" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/runcoms/secret"
 fi
+
+# Make it possible to add per-machine customizations.
+if [[ -f ~/.zshenv.local ]] source ~/.zshenv.local

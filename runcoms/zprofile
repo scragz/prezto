@@ -77,8 +77,6 @@ for path_file in /etc/paths.d/*(.N); do
 done
 unset path_file
 
-export NODE_PATH="/usr/local/lib/node"
-
 #
 # Less
 #
