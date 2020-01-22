@@ -1,7 +1,7 @@
 # Prompt
 function prompt_scragz_precmd() {
   # last command exit status smiley, hidden if iterm2 integration present
-  PROMPT_SMILEY='%(?,%F{green}😀 %F{none},%F{red}😡 %F{none})'
+  PROMPT_SMILEY='%(?,%F{green}☺%F{none},%F{red}☻%F{none})'
 
   if (( $+functions[git-info] )); then
     git-info
@@ -27,11 +27,11 @@ function prompt_scragz_precmd() {
     PROMPT_HOST='%F{cyan}%m'
   fi
 
-  if typeset -f iterm2_prompt_mark > /dev/null; then
-    PROMPT_SMILEY=''
-  else
-    alias iterm2_prompt_mark=:
-  fi
+  #if typeset -f iterm2_prompt_mark > /dev/null; then
+  #  PROMPT_SMILEY=''
+  #else
+  alias iterm2_prompt_mark=:
+  #fi
 }
 
 function prompt_scragz_setup() {
